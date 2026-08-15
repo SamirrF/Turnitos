@@ -64,6 +64,17 @@ export async function crearServicio(negocioId, servicio) {
   return data
 }
 
+export async function actualizarServicio(servicioId, patch) {
+  const { data, error } = await supabase
+    .from('servicio')
+    .update(patch)
+    .eq('id', servicioId)
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
 export async function listarEstilistas(negocioId) {
   const { data, error } = await supabase
     .from('estilista')
@@ -82,4 +93,40 @@ export async function crearEstilista(negocioId, estilista) {
     .single()
   if (error) throw error
   return data
+}
+
+export async function actualizarEstilista(estilistaId, patch) {
+  const { data, error } = await supabase
+    .from('estilista')
+    .update(patch)
+    .eq('id', estilistaId)
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
+export async function listarDiasNoLaborables(negocioId) {
+  const { data, error } = await supabase
+    .from('dia_no_laborable')
+    .select('*')
+    .eq('negocio_id', negocioId)
+    .order('fecha', { ascending: true })
+  if (error) throw error
+  return data ?? []
+}
+
+export async function crearDiaNoLaborable(negocioId, { fecha, motivo }) {
+  const { data, error } = await supabase
+    .from('dia_no_laborable')
+    .insert({ negocio_id: negocioId, fecha, motivo: motivo || null })
+    .select()
+    .single()
+  if (error) throw error
+  return data
+}
+
+export async function eliminarDiaNoLaborable(id) {
+  const { error } = await supabase.from('dia_no_laborable').delete().eq('id', id)
+  if (error) throw error
 }

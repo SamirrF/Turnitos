@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { supabase } from '../lib/supabaseClient'
-import { obtenerNegocioActual } from '../lib/negocioApi'
+import { useNegocioActual } from '../lib/useNegocioActual'
 import PasoDatosNegocio from './onboarding/PasoDatosNegocio.jsx'
 import PasoHorario from './onboarding/PasoHorario.jsx'
 import PasoServicio from './onboarding/PasoServicio.jsx'
@@ -11,47 +10,25 @@ const PASOS = ['datos', 'horario', 'servicio', 'estilista', 'listo']
 
 export default function Onboarding() {
   const navigate = useNavigate()
-  const [negocio, setNegocio] = useState(null)
-  const [cargando, setCargando] = useState(true)
+  const { negocio, setNegocio, autenticado, cargando } = useNegocioActual()
   const [pasoIndex, setPasoIndex] = useState(0)
 
   useEffect(() => {
-    let activo = true
-
-    async function cargar() {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession()
-
-      if (!session) {
-        navigate('/registro')
-        return
-      }
-
-      const negocioActual = await obtenerNegocioActual()
-      if (!activo) return
-
-      if (!negocioActual) {
-        navigate('/registro')
-        return
-      }
-
-      setNegocio(negocioActual)
-      setCargando(false)
+    if (autenticado === false) {
+      navigate('/registro')
+      return
     }
-
-    cargar()
-    return () => {
-      activo = false
+    if (!cargando && autenticado && !negocio) {
+      navigate('/registro')
     }
-  }, [navigate])
+  }, [autenticado, cargando, negocio, navigate])
 
   function irAlSiguientePaso(negocioActualizado) {
     if (negocioActualizado) setNegocio(negocioActualizado)
     setPasoIndex((i) => i + 1)
   }
 
-  if (cargando) {
+  if (cargando || !negocio) {
     return <div className="min-h-screen flex items-center justify-center text-slate-500">Cargando...</div>
   }
 

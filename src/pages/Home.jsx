@@ -7,6 +7,9 @@ export default function Home() {
       <Link to="/registro" className="bg-slate-800 text-white rounded px-4 py-2">
         Registrar mi negocio
       </Link>
+      <Link to="/login" className="text-sm text-slate-500 underline">
+        Ya tengo una cuenta
+      </Link>
     </div>
   )
 }
