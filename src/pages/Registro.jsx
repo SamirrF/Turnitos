@@ -3,10 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { registrarNegocio } from '../lib/negocioApi'
 import { slugify, slugValido, slugDisponible } from '../lib/slug'
-
-function emailValido(valor) {
-  return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(valor)
-}
+import { emailValido } from '../lib/validacion'
 
 export default function Registro() {
   const navigate = useNavigate()

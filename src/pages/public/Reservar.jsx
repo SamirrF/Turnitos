@@ -6,9 +6,12 @@ import {
   listarEstilistasActivos,
   obtenerDiasDisponibles,
   obtenerHorariosDisponibles,
+  crearTurno,
 } from '../../lib/publicoApi'
+import { emailValido, telefonoValido } from '../../lib/validacion'
 import { hoyISO, inicioDeMes, sumarDias } from '../../lib/fechas'
 import Calendario from './Calendario.jsx'
+import ConfirmacionTurno from './ConfirmacionTurno.jsx'
 
 function horaActualHHMM() {
   const ahora = new Date()
@@ -34,6 +37,14 @@ export default function Reservar() {
   const [horarios, setHorarios] = useState([])
   const [cargandoHorarios, setCargandoHorarios] = useState(false)
   const [horaSeleccionada, setHoraSeleccionada] = useState(null)
+
+  const [clienteNombre, setClienteNombre] = useState('')
+  const [clienteEmail, setClienteEmail] = useState('')
+  const [clienteTelefono, setClienteTelefono] = useState('')
+  const [clienteNota, setClienteNota] = useState('')
+  const [errorReserva, setErrorReserva] = useState(null)
+  const [enviando, setEnviando] = useState(false)
+  const [turnoCreado, setTurnoCreado] = useState(null)
 
   useEffect(() => {
     let activo = true
@@ -80,29 +91,25 @@ export default function Reservar() {
     }
   }, [negocio, servicioId, estilistaId, mesReferencia])
 
-  useEffect(() => {
+  function cargarHorarios() {
     if (!negocio || !servicioId || !fechaSeleccionada) {
       setHorarios([])
       return
     }
-    let activo = true
     setCargandoHorarios(true)
     obtenerHorariosDisponibles(negocio.id, servicioId, fechaSeleccionada, estilistaId)
       .then((data) => {
-        if (!activo) return
         const filtrados =
-          fechaSeleccionada === hoyISO()
-            ? data.filter((h) => h.hora_inicio > horaActualHHMM())
-            : data
+          fechaSeleccionada === hoyISO() ? data.filter((h) => h.hora_inicio > horaActualHHMM()) : data
         setHorarios(filtrados)
       })
-      .catch((err) => activo && setError(err.message))
-      .finally(() => {
-        if (activo) setCargandoHorarios(false)
-      })
-    return () => {
-      activo = false
-    }
+      .catch((err) => setError(err.message))
+      .finally(() => setCargandoHorarios(false))
+  }
+
+  useEffect(() => {
+    cargarHorarios()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [negocio, servicioId, estilistaId, fechaSeleccionada])
 
   function elegirServicio(id) {
@@ -128,6 +135,41 @@ export default function Reservar() {
     setHoraSeleccionada(null)
   }
 
+  async function confirmarTurno(e) {
+    e.preventDefault()
+    setErrorReserva(null)
+
+    if (!clienteNombre.trim()) return setErrorReserva('El nombre es obligatorio')
+    if (!emailValido(clienteEmail)) return setErrorReserva('Ingresá un email válido')
+    if (!telefonoValido(clienteTelefono)) return setErrorReserva('Ingresá un teléfono válido')
+
+    setEnviando(true)
+    try {
+      const turno = await crearTurno({
+        negocioId: negocio.id,
+        servicioId,
+        estilistaId,
+        fecha: fechaSeleccionada,
+        horaInicio: horaSeleccionada.hora_inicio,
+        clienteNombre,
+        clienteEmail,
+        clienteTelefono,
+        nota: clienteNota,
+      })
+      setTurnoCreado(turno)
+    } catch (err) {
+      if (err.message === 'Ese horario ya no está disponible') {
+        setErrorReserva('Justo se ocupó ese horario. Elegí otro de la lista actualizada.')
+        setHoraSeleccionada(null)
+        cargarHorarios()
+      } else {
+        setErrorReserva(err.message ?? 'No se pudo confirmar el turno')
+      }
+    } finally {
+      setEnviando(false)
+    }
+  }
+
   if (cargandoNegocio) {
     return <div className="min-h-screen flex items-center justify-center text-slate-500">Cargando...</div>
   }
@@ -136,6 +178,24 @@ export default function Reservar() {
     return (
       <div className="min-h-screen flex items-center justify-center text-slate-500">
         Negocio no encontrado.
+      </div>
+    )
+  }
+
+  if (turnoCreado) {
+    const servicioElegido = servicios.find((s) => s.id === turnoCreado.servicio_id)
+    const estilistaAsignado = estilistas.find((e) => e.id === turnoCreado.estilista_id)
+    return (
+      <div className="min-h-screen bg-slate-50 px-4 py-10">
+        <div className="max-w-md mx-auto">
+          <ConfirmacionTurno
+            turno={turnoCreado}
+            negocio={negocio}
+            servicio={servicioElegido}
+            estilista={estilistaAsignado}
+            slug={slug}
+          />
+        </div>
       </div>
     )
   }
@@ -249,10 +309,68 @@ export default function Reservar() {
           </section>
         )}
 
+        {errorReserva && <p className="text-red-600 text-sm">{errorReserva}</p>}
+
         {horaSeleccionada && (
-          <p className="text-sm text-slate-600">
-            Elegiste el {fechaSeleccionada} a las {horaSeleccionada.hora_inicio.slice(0, 5)}.
-          </p>
+          <form onSubmit={confirmarTurno} className="space-y-4">
+            <section className="space-y-2">
+              <h2 className="text-sm font-medium text-slate-500">5. Tus datos</h2>
+              <p className="text-sm text-slate-600">
+                {fechaSeleccionada} a las {horaSeleccionada.hora_inicio.slice(0, 5)}
+              </p>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700">Nombre completo</label>
+                <input
+                  type="text"
+                  value={clienteNombre}
+                  onChange={(e) => setClienteNombre(e.target.value)}
+                  className="mt-1 w-full border rounded px-3 py-2 bg-white"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700">Email</label>
+                <input
+                  type="email"
+                  value={clienteEmail}
+                  onChange={(e) => setClienteEmail(e.target.value)}
+                  className="mt-1 w-full border rounded px-3 py-2 bg-white"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700">Teléfono</label>
+                <input
+                  type="tel"
+                  value={clienteTelefono}
+                  onChange={(e) => setClienteTelefono(e.target.value)}
+                  className="mt-1 w-full border rounded px-3 py-2 bg-white"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700">Nota (opcional)</label>
+                <textarea
+                  value={clienteNota}
+                  onChange={(e) => setClienteNota(e.target.value)}
+                  className="mt-1 w-full border rounded px-3 py-2 bg-white"
+                  rows={2}
+                />
+              </div>
+            </section>
+
+            <button
+              type="submit"
+              disabled={enviando}
+              className="w-full bg-slate-800 text-white rounded px-4 py-2 disabled:opacity-50"
+            >
+              {enviando ? 'Confirmando...' : 'Confirmar turno'}
+            </button>
+          </form>
         )}
       </div>
     </div>

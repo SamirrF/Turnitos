@@ -49,3 +49,29 @@ export async function obtenerHorariosDisponibles(negocioId, servicioId, fecha, e
   if (error) throw error
   return data ?? []
 }
+
+export async function crearTurno({
+  negocioId,
+  servicioId,
+  estilistaId,
+  fecha,
+  horaInicio,
+  clienteNombre,
+  clienteEmail,
+  clienteTelefono,
+  nota,
+}) {
+  const { data, error } = await supabase.rpc('crear_turno', {
+    p_negocio_id: negocioId,
+    p_servicio_id: servicioId,
+    p_fecha: fecha,
+    p_hora_inicio: horaInicio,
+    p_cliente_nombre: clienteNombre,
+    p_cliente_email: clienteEmail,
+    p_cliente_telefono: clienteTelefono,
+    p_nota: nota || null,
+    p_estilista_id: estilistaId || null,
+  })
+  if (error) throw error
+  return data
+}
