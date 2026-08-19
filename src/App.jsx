@@ -9,6 +9,9 @@ import PanelHorarios from './pages/panel/PanelHorarios.jsx'
 import PanelReportes from './pages/panel/PanelReportes.jsx'
 import PanelServicios from './pages/panel/PanelServicios.jsx'
 import PanelEstilistas from './pages/panel/PanelEstilistas.jsx'
+import NegocioPublico from './pages/public/NegocioPublico.jsx'
+import Reservar from './pages/public/Reservar.jsx'
+import MiTurnoPlaceholder from './pages/public/MiTurnoPlaceholder.jsx'
 
 function App() {
   return (
@@ -25,6 +28,13 @@ function App() {
         <Route path="servicios" element={<PanelServicios />} />
         <Route path="estilistas" element={<PanelEstilistas />} />
       </Route>
+
+      {/* Rutas públicas por slug de negocio — van al final a propósito.
+          negocio_slug_no_reservado (migración 00000000000004) evita que un
+          slug real colisione con las rutas estáticas de arriba. */}
+      <Route path="/:slug" element={<NegocioPublico />} />
+      <Route path="/:slug/reservar" element={<Reservar />} />
+      <Route path="/:slug/mi-turno" element={<MiTurnoPlaceholder />} />
     </Routes>
   )
 }
