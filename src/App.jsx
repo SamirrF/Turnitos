@@ -11,7 +11,7 @@ import PanelServicios from './pages/panel/PanelServicios.jsx'
 import PanelEstilistas from './pages/panel/PanelEstilistas.jsx'
 import NegocioPublico from './pages/public/NegocioPublico.jsx'
 import Reservar from './pages/public/Reservar.jsx'
-import MiTurnoPlaceholder from './pages/public/MiTurnoPlaceholder.jsx'
+import MiTurno from './pages/public/MiTurno.jsx'
 
 function App() {
   return (
@@ -34,7 +34,7 @@ function App() {
           slug real colisione con las rutas estáticas de arriba. */}
       <Route path="/:slug" element={<NegocioPublico />} />
       <Route path="/:slug/reservar" element={<Reservar />} />
-      <Route path="/:slug/mi-turno" element={<MiTurnoPlaceholder />} />
+      <Route path="/:slug/mi-turno" element={<MiTurno />} />
     </Routes>
   )
 }

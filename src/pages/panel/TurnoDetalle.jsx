@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import EstadoBadge from './EstadoBadge.jsx'
+import { marcarTurnoCompletado } from '../../lib/turnoApi'
 
 function Campo({ etiqueta, valor }) {
   if (!valor) return null
@@ -10,8 +12,24 @@ function Campo({ etiqueta, valor }) {
   )
 }
 
-export default function TurnoDetalle({ turno, onCerrar }) {
+export default function TurnoDetalle({ turno, onCerrar, onActualizado }) {
+  const [marcando, setMarcando] = useState(false)
+  const [error, setError] = useState(null)
+
   if (!turno) return null
+
+  async function completar() {
+    setError(null)
+    setMarcando(true)
+    try {
+      await marcarTurnoCompletado(turno.id)
+      onActualizado?.()
+    } catch (err) {
+      setError(err.message ?? 'No se pudo actualizar el turno')
+    } finally {
+      setMarcando(false)
+    }
+  }
 
   return (
     <div
@@ -38,6 +56,18 @@ export default function TurnoDetalle({ turno, onCerrar }) {
           <Campo etiqueta="Teléfono" valor={turno.cliente_telefono} />
           <Campo etiqueta="Nota" valor={turno.nota} />
         </div>
+
+        {error && <p className="text-red-600 text-sm">{error}</p>}
+
+        {turno.estado === 'confirmado' && (
+          <button
+            onClick={completar}
+            disabled={marcando}
+            className="w-full border border-slate-800 text-slate-800 rounded px-4 py-2 disabled:opacity-50"
+          >
+            {marcando ? 'Guardando...' : 'Marcar como completado'}
+          </button>
+        )}
 
         <button onClick={onCerrar} className="w-full bg-slate-800 text-white rounded px-4 py-2">
           Cerrar

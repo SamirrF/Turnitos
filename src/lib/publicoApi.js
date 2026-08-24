@@ -75,3 +75,25 @@ export async function crearTurno({
   if (error) throw error
   return data
 }
+
+export async function obtenerTurnoPorToken(token) {
+  const { data, error } = await supabase.rpc('obtener_turno_por_token', { p_token: token })
+  if (error) throw error
+  return data?.[0] ?? null
+}
+
+export async function cancelarTurno(token) {
+  const { data, error } = await supabase.rpc('cancelar_turno', { p_token: token })
+  if (error) throw error
+  return data
+}
+
+export async function reprogramarTurno(token, fecha, horaInicio) {
+  const { data, error } = await supabase.rpc('reprogramar_turno', {
+    p_token: token,
+    p_fecha: fecha,
+    p_hora_inicio: horaInicio,
+  })
+  if (error) throw error
+  return data
+}

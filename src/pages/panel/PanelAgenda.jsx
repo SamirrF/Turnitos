@@ -23,6 +23,13 @@ export default function PanelAgenda() {
   const desde = vista === 'semana' ? inicioDeSemana(fecha) : fecha
   const hasta = vista === 'semana' ? finDeSemana(fecha) : fecha
 
+  function cargarTurnos() {
+    setCargando(true)
+    return listarTurnos(negocio.id, { desde, hasta, estilistaId: estilistaId || undefined })
+      .then((data) => setTurnos(data))
+      .finally(() => setCargando(false))
+  }
+
   useEffect(() => {
     let activo = true
     setCargando(true)
@@ -37,6 +44,11 @@ export default function PanelAgenda() {
       activo = false
     }
   }, [negocio.id, desde, hasta, estilistaId])
+
+  function turnoActualizado() {
+    setTurnoSeleccionado(null)
+    cargarTurnos()
+  }
 
   function irAnterior() {
     setFecha((f) => sumarDias(f, vista === 'semana' ? -7 : -1))
@@ -121,7 +133,11 @@ export default function PanelAgenda() {
         </ul>
       )}
 
-      <TurnoDetalle turno={turnoSeleccionado} onCerrar={() => setTurnoSeleccionado(null)} />
+      <TurnoDetalle
+        turno={turnoSeleccionado}
+        onCerrar={() => setTurnoSeleccionado(null)}
+        onActualizado={turnoActualizado}
+      />
     </div>
   )
 }

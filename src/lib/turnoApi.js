@@ -16,3 +16,9 @@ export async function listarTurnos(negocioId, { desde, hasta, estilistaId } = {}
   if (error) throw error
   return data ?? []
 }
+
+export async function marcarTurnoCompletado(turnoId) {
+  const { data, error } = await supabase.rpc('marcar_turno_completado', { p_turno_id: turnoId })
+  if (error) throw error
+  return data
+}
