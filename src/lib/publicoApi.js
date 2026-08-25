@@ -97,3 +97,8 @@ export async function reprogramarTurno(token, fecha, horaInicio) {
   if (error) throw error
   return data
 }
+
+export async function solicitarRecuperacionTurno(email) {
+  const { error } = await supabase.rpc('solicitar_recuperacion_turno', { p_email: email })
+  if (error) throw error
+}

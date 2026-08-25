@@ -6,6 +6,7 @@ import {
   reprogramarTurno,
   obtenerDiasDisponibles,
   obtenerHorariosDisponibles,
+  solicitarRecuperacionTurno,
 } from '../../lib/publicoApi'
 import { hoyISO, inicioDeMes, sumarDias } from '../../lib/fechas'
 import EstadoBadge from '../panel/EstadoBadge.jsx'
@@ -27,6 +28,7 @@ export default function MiTurno() {
 
   const [emailBusqueda, setEmailBusqueda] = useState('')
   const [mensajeEmail, setMensajeEmail] = useState(null)
+  const [enviandoEmail, setEnviandoEmail] = useState(false)
 
   const [vista, setVista] = useState('detalle')
 
@@ -70,9 +72,19 @@ export default function MiTurno() {
     buscarTurno(tokenInput)
   }
 
-  function handleEmailSubmit(e) {
+  async function handleEmailSubmit(e) {
     e.preventDefault()
-    setMensajeEmail('Si ese email tiene un turno registrado, en breve vas a recibir un link para gestionarlo.')
+    setEnviandoEmail(true)
+    try {
+      await solicitarRecuperacionTurno(emailBusqueda)
+    } catch {
+      // Intencional: mismo mensaje se haya encontrado algo o no, y aunque
+      // la llamada falle — no queremos que la respuesta delate si un email
+      // tiene turnos registrados.
+    } finally {
+      setEnviandoEmail(false)
+      setMensajeEmail('Si ese email tiene un turno registrado, en breve vas a recibir un link para gestionarlo.')
+    }
   }
 
   async function confirmarCancelacion() {
@@ -203,8 +215,12 @@ export default function MiTurno() {
                 className="w-full border rounded px-3 py-2"
                 required
               />
-              <button type="submit" className="w-full border border-slate-800 text-slate-800 rounded px-4 py-2">
-                Enviar
+              <button
+                type="submit"
+                disabled={enviandoEmail}
+                className="w-full border border-slate-800 text-slate-800 rounded px-4 py-2 disabled:opacity-50"
+              >
+                {enviandoEmail ? 'Enviando...' : 'Enviar'}
               </button>
               {mensajeEmail && <p className="text-sm text-slate-600">{mensajeEmail}</p>}
             </form>

@@ -37,8 +37,8 @@ export default function ConfirmacionTurno({ turno, negocio, servicio, estilista,
 
       <div className="border rounded p-3 bg-slate-50">
         <p className="text-sm text-slate-600">
-          Código de gestión (todavía no enviamos email de confirmación — guardalo para más adelante poder
-          ver o modificar tu turno):
+          Te enviamos un email con este código a {turno.cliente_email}. Igual, guardalo por las dudas — lo vas
+          a necesitar para ver o modificar tu turno:
         </p>
         <p className="font-mono text-sm text-slate-800 break-all">{turno.token_gestion}</p>
       </div>
