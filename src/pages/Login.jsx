@@ -16,7 +16,9 @@ export default function Login() {
     try {
       const { error: signInError } = await supabase.auth.signInWithPassword({ email, password })
       if (signInError) throw signInError
-      navigate('/panel')
+
+      const { data: esSuperAdmin } = await supabase.rpc('is_super_admin')
+      navigate(esSuperAdmin ? '/super-admin' : '/panel')
     } catch {
       setError('Email o contraseña incorrectos')
     } finally {

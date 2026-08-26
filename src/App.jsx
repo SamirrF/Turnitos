@@ -9,6 +9,8 @@ import PanelHorarios from './pages/panel/PanelHorarios.jsx'
 import PanelReportes from './pages/panel/PanelReportes.jsx'
 import PanelServicios from './pages/panel/PanelServicios.jsx'
 import PanelEstilistas from './pages/panel/PanelEstilistas.jsx'
+import SuperAdminLayout from './pages/superadmin/SuperAdminLayout.jsx'
+import SuperAdminNegocios from './pages/superadmin/SuperAdminNegocios.jsx'
 import NegocioPublico from './pages/public/NegocioPublico.jsx'
 import Reservar from './pages/public/Reservar.jsx'
 import MiTurno from './pages/public/MiTurno.jsx'
@@ -27,6 +29,9 @@ function App() {
         <Route path="reportes" element={<PanelReportes />} />
         <Route path="servicios" element={<PanelServicios />} />
         <Route path="estilistas" element={<PanelEstilistas />} />
+      </Route>
+      <Route path="/super-admin" element={<SuperAdminLayout />}>
+        <Route index element={<SuperAdminNegocios />} />
       </Route>
 
       {/* Rutas públicas por slug de negocio — van al final a propósito.
