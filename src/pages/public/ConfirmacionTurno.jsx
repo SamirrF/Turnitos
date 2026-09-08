@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 export default function ConfirmacionTurno({ turno, negocio, servicio, estilista, slug }) {
   return (
-    <div className="bg-white rounded-lg shadow p-6 space-y-4">
+    <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 space-y-4">
       <div className="text-center space-y-1">
         <h1 className="text-xl font-semibold text-slate-800">¡Turno confirmado!</h1>
         <p className="text-slate-500 text-sm">Guardá esta información.</p>
@@ -35,7 +35,7 @@ export default function ConfirmacionTurno({ turno, negocio, servicio, estilista,
         </p>
       </dl>
 
-      <div className="border rounded p-3 bg-slate-50">
+      <div className="border border-slate-200 rounded-xl p-3 bg-slate-50">
         <p className="text-sm text-slate-600">
           Te enviamos un email con este código a {turno.cliente_email}. Igual, guardalo por las dudas — lo vas
           a necesitar para ver o modificar tu turno:
@@ -43,7 +43,7 @@ export default function ConfirmacionTurno({ turno, negocio, servicio, estilista,
         <p className="font-mono text-sm text-slate-800 break-all">{turno.token_gestion}</p>
       </div>
 
-      <Link to={`/${slug}`} className="block text-center text-sm text-slate-500 underline">
+      <Link to={`/${slug}`} className="block text-center text-sm text-indigo-600 hover:text-indigo-700 font-medium transition">
         Volver al inicio
       </Link>
     </div>

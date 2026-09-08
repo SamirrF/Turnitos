@@ -41,11 +41,11 @@ export default function SuperAdminNegocios() {
       <h1 className="text-xl font-semibold text-slate-800">Negocios registrados</h1>
 
       <div className="grid grid-cols-2 gap-4">
-        <div className="bg-white rounded-lg shadow p-4">
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4">
           <p className="text-sm text-slate-500">Negocios totales</p>
           <p className="text-2xl font-semibold text-slate-800">{totalNegocios}</p>
         </div>
-        <div className="bg-white rounded-lg shadow p-4">
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4">
           <p className="text-sm text-slate-500">Turnos totales en la plataforma</p>
           <p className="text-2xl font-semibold text-slate-800">{totalTurnos}</p>
         </div>
@@ -58,7 +58,7 @@ export default function SuperAdminNegocios() {
       ) : (
         <ul className="space-y-2">
           {negocios.map((n) => (
-            <li key={n.id} className="bg-white rounded-lg shadow p-4 flex items-center justify-between">
+            <li key={n.id} className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 flex items-center justify-between">
               <div>
                 <p className="font-medium text-slate-800">{n.nombre}</p>
                 <p className="text-sm text-slate-500">/{n.slug}</p>
@@ -74,7 +74,7 @@ export default function SuperAdminNegocios() {
                 <button
                   onClick={() => toggleEstado(n)}
                   disabled={actualizandoId === n.id}
-                  className="text-sm border border-slate-300 rounded px-3 py-1 text-slate-600 disabled:opacity-50"
+                  className="text-sm border border-slate-200 rounded-lg px-3 py-1.5 text-slate-600 hover:bg-slate-50 transition disabled:opacity-50"
                 >
                   {n.estado === 'activo' ? 'Desactivar' : 'Activar'}
                 </button>

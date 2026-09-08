@@ -85,7 +85,7 @@ export default function PanelEstilistas() {
       <div>
         <h1 className="text-xl font-semibold text-slate-800 mb-4">Estilistas</h1>
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 space-y-4">
           <h2 className="text-sm font-medium text-slate-500">
             {editandoId ? 'Editar estilista' : 'Nuevo estilista'}
           </h2>
@@ -96,7 +96,7 @@ export default function PanelEstilistas() {
               type="text"
               value={form.nombre}
               onChange={(e) => setForm({ ...form, nombre: e.target.value })}
-              className="mt-1 w-full border rounded px-3 py-2"
+              className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
               required
             />
           </div>
@@ -107,7 +107,7 @@ export default function PanelEstilistas() {
               type="url"
               value={form.foto_url}
               onChange={(e) => setForm({ ...form, foto_url: e.target.value })}
-              className="mt-1 w-full border rounded px-3 py-2"
+              className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
             />
           </div>
 
@@ -117,7 +117,7 @@ export default function PanelEstilistas() {
               type="text"
               value={form.especialidad}
               onChange={(e) => setForm({ ...form, especialidad: e.target.value })}
-              className="mt-1 w-full border rounded px-3 py-2"
+              className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
             />
           </div>
 
@@ -135,12 +135,12 @@ export default function PanelEstilistas() {
             <button
               type="submit"
               disabled={guardando}
-              className="bg-slate-800 text-white rounded px-4 py-2 disabled:opacity-50"
+              className="bg-indigo-600 text-white rounded-xl px-4 py-2.5 font-medium shadow-sm shadow-indigo-200 hover:bg-indigo-700 active:bg-indigo-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {guardando ? 'Guardando...' : editandoId ? 'Guardar cambios' : 'Agregar estilista'}
             </button>
             {editandoId && (
-              <button type="button" onClick={cancelarEdicion} className="text-slate-500 px-4 py-2">
+              <button type="button" onClick={cancelarEdicion} className="text-slate-500 px-4 py-2.5 rounded-xl hover:bg-slate-100 transition">
                 Cancelar
               </button>
             )}
@@ -157,12 +157,12 @@ export default function PanelEstilistas() {
         ) : (
           <ul className="space-y-2">
             {estilistas.map((est) => (
-              <li key={est.id} className="bg-white rounded-lg shadow p-4 flex items-center justify-between">
+              <li key={est.id} className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 flex items-center justify-between">
                 <div>
                   <p className="font-medium text-slate-800">
                     {est.nombre}{' '}
                     {!est.activo && (
-                      <span className="text-xs bg-slate-200 text-slate-600 rounded px-2 py-0.5 ml-1">
+                      <span className="text-xs bg-slate-200 text-slate-600 rounded-full px-2 py-0.5 ml-1">
                         Inactivo
                       </span>
                     )}
@@ -170,10 +170,10 @@ export default function PanelEstilistas() {
                   {est.especialidad && <p className="text-sm text-slate-600">{est.especialidad}</p>}
                 </div>
                 <div className="flex gap-2">
-                  <button onClick={() => iniciarEdicion(est)} className="text-sm text-slate-600 hover:underline">
+                  <button onClick={() => iniciarEdicion(est)} className="text-sm text-indigo-600 hover:text-indigo-700 font-medium transition">
                     Editar
                   </button>
-                  <button onClick={() => toggleActivo(est)} className="text-sm text-slate-600 hover:underline">
+                  <button onClick={() => toggleActivo(est)} className="text-sm text-indigo-600 hover:text-indigo-700 font-medium transition">
                     {est.activo ? 'Desactivar' : 'Activar'}
                   </button>
                 </div>

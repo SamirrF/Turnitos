@@ -62,18 +62,18 @@ export default function PanelAgenda() {
     <div className="space-y-6">
       <h1 className="text-xl font-semibold text-slate-800">Agenda</h1>
 
-      <div className="bg-white rounded-lg shadow p-4 flex flex-wrap items-center gap-3">
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 flex flex-wrap items-center gap-3">
         <div className="flex items-center gap-2">
-          <button onClick={irAnterior} className="border rounded px-2 py-1 text-slate-600">
+          <button onClick={irAnterior} className="border border-slate-200 rounded-lg px-2 py-1 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition text-slate-600">
             ←
           </button>
           <input
             type="date"
             value={fecha}
             onChange={(e) => setFecha(e.target.value)}
-            className="border rounded px-2 py-1"
+            className="border border-slate-200 rounded-lg px-2 py-1 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
           />
-          <button onClick={irSiguiente} className="border rounded px-2 py-1 text-slate-600">
+          <button onClick={irSiguiente} className="border border-slate-200 rounded-lg px-2 py-1 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition text-slate-600">
             →
           </button>
         </div>
@@ -96,7 +96,7 @@ export default function PanelAgenda() {
         <select
           value={estilistaId}
           onChange={(e) => setEstilistaId(e.target.value)}
-          className="border rounded px-2 py-1 text-sm"
+          className="border border-slate-200 rounded-lg px-2 py-1 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition text-sm"
         >
           <option value="">Todos los estilistas</option>
           {estilistas.map((e) => (
@@ -117,7 +117,7 @@ export default function PanelAgenda() {
             <li
               key={t.id}
               onClick={() => setTurnoSeleccionado(t)}
-              className="bg-white rounded-lg shadow p-4 flex items-center justify-between cursor-pointer hover:bg-slate-50"
+              className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 flex items-center justify-between cursor-pointer hover:bg-slate-50"
             >
               <div>
                 <p className="font-medium text-slate-800">

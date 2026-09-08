@@ -13,5 +13,5 @@ const ETIQUETAS = {
 export default function EstadoBadge({ estado }) {
   const clase = ESTILOS[estado] ?? 'bg-slate-100 text-slate-600'
   const etiqueta = ETIQUETAS[estado] ?? estado
-  return <span className={`text-xs rounded px-2 py-0.5 ${clase}`}>{etiqueta}</span>
+  return <span className={`text-xs font-medium rounded-full px-2.5 py-1 ${clase}`}>{etiqueta}</span>
 }

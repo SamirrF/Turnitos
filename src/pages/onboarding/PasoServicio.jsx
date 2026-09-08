@@ -68,7 +68,7 @@ export default function PasoServicio({ negocio, onCompletado }) {
     return (
       <div className="space-y-4">
         <h2 className="text-lg font-semibold text-slate-800">Paso 3 de 4 · Tu primer servicio</h2>
-        <div className="border rounded px-4 py-3 bg-slate-50">
+        <div className="border border-slate-200 rounded-xl px-4 py-3 bg-slate-50">
           <p className="font-medium text-slate-800">{servicioExistente.nombre}</p>
           {servicioExistente.descripcion && (
             <p className="text-sm text-slate-600">{servicioExistente.descripcion}</p>
@@ -80,7 +80,7 @@ export default function PasoServicio({ negocio, onCompletado }) {
         <button
           type="button"
           onClick={() => onCompletado()}
-          className="w-full bg-slate-800 text-white rounded px-4 py-2"
+          className="w-full bg-indigo-600 text-white rounded-xl px-4 py-2.5 font-medium shadow-sm shadow-indigo-200 hover:bg-indigo-700 active:bg-indigo-800 transition"
         >
           Siguiente
         </button>
@@ -98,7 +98,7 @@ export default function PasoServicio({ negocio, onCompletado }) {
           type="text"
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
-          className="mt-1 w-full border rounded px-3 py-2"
+          className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
           required
         />
       </div>
@@ -108,7 +108,7 @@ export default function PasoServicio({ negocio, onCompletado }) {
         <textarea
           value={descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
-          className="mt-1 w-full border rounded px-3 py-2"
+          className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
           rows={2}
         />
       </div>
@@ -122,7 +122,7 @@ export default function PasoServicio({ negocio, onCompletado }) {
             step="0.01"
             value={precio}
             onChange={(e) => setPrecio(e.target.value)}
-            className="mt-1 w-full border rounded px-3 py-2"
+            className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
             required
           />
         </div>
@@ -134,7 +134,7 @@ export default function PasoServicio({ negocio, onCompletado }) {
             step="1"
             value={duracion}
             onChange={(e) => setDuracion(e.target.value)}
-            className="mt-1 w-full border rounded px-3 py-2"
+            className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
             required
           />
         </div>
@@ -145,7 +145,7 @@ export default function PasoServicio({ negocio, onCompletado }) {
       <button
         type="submit"
         disabled={guardando}
-        className="w-full bg-slate-800 text-white rounded px-4 py-2 disabled:opacity-50"
+        className="w-full bg-indigo-600 text-white rounded-xl px-4 py-2.5 font-medium shadow-sm shadow-indigo-200 hover:bg-indigo-700 active:bg-indigo-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {guardando ? 'Guardando...' : 'Siguiente'}
       </button>

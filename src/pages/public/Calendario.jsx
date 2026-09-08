@@ -31,30 +31,39 @@ export default function Calendario({ mesReferencia, fechasDisponibles, fechaSele
   const hoy = hoyISO()
 
   return (
-    <div className="bg-white rounded-lg border p-4">
-      <div className="flex items-center justify-between mb-3">
-        <button type="button" onClick={() => onCambiarMes(-1)} className="px-2 py-1 text-slate-600">
+    <div className="bg-white rounded-3xl border border-slate-100 shadow-lg shadow-slate-200/60 p-5">
+      <div className="flex items-center justify-between mb-4">
+        <button
+          type="button"
+          onClick={() => onCambiarMes(-1)}
+          className="w-9 h-9 flex items-center justify-center rounded-full text-slate-500 hover:bg-indigo-50 hover:text-indigo-600 transition"
+        >
           ←
         </button>
-        <span className="font-medium text-slate-800 capitalize">{nombreMes(mesReferencia)}</span>
-        <button type="button" onClick={() => onCambiarMes(1)} className="px-2 py-1 text-slate-600">
+        <span className="font-semibold text-slate-800 capitalize tracking-tight">{nombreMes(mesReferencia)}</span>
+        <button
+          type="button"
+          onClick={() => onCambiarMes(1)}
+          className="w-9 h-9 flex items-center justify-center rounded-full text-slate-500 hover:bg-indigo-50 hover:text-indigo-600 transition"
+        >
           →
         </button>
       </div>
 
-      <div className="grid grid-cols-7 gap-1 text-center text-xs text-slate-400 mb-1">
+      <div className="grid grid-cols-7 gap-1 text-center text-xs font-medium text-slate-400 mb-2">
         {DIAS_SEMANA.map((d) => (
           <span key={d}>{d}</span>
         ))}
       </div>
 
-      <div className="grid grid-cols-7 gap-1">
+      <div className="grid grid-cols-7 gap-1.5">
         {dias.map((fecha) => {
           const enMes = fecha >= inicioMes && fecha <= finMes
           const esPasado = fecha < hoy
           const disponible = fechasDisponibles.has(fecha)
           const habilitado = enMes && disponible && !esPasado
           const seleccionado = fecha === fechaSeleccionada
+          const esHoy = fecha === hoy
 
           return (
             <button
@@ -62,11 +71,16 @@ export default function Calendario({ mesReferencia, fechasDisponibles, fechaSele
               key={fecha}
               disabled={!habilitado}
               onClick={() => onSeleccionar(fecha)}
-              className={`aspect-square rounded text-sm ${!enMes ? 'text-slate-300' : habilitado ? 'text-slate-800' : 'text-slate-300'} ${
-                habilitado ? 'hover:bg-slate-100' : 'cursor-not-allowed'
-              } ${seleccionado ? '!bg-slate-800 !text-white' : ''}`}
+              className={`relative aspect-square rounded-xl text-sm font-medium transition-all duration-150 ${
+                !enMes ? 'text-slate-300' : habilitado ? 'text-slate-700' : 'text-slate-300'
+              } ${habilitado ? 'hover:bg-indigo-50 hover:scale-105' : 'cursor-not-allowed'} ${
+                esHoy && !seleccionado ? 'ring-1 ring-inset ring-indigo-300' : ''
+              } ${seleccionado ? '!bg-indigo-600 !text-white shadow-md shadow-indigo-300 scale-105' : ''}`}
             >
               {Number(fecha.slice(-2))}
+              {habilitado && !seleccionado && (
+                <span className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-indigo-400" />
+              )}
             </button>
           )
         })}

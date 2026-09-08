@@ -35,7 +35,7 @@ export default function PasoHorario({ negocio, onCompletado }) {
       <button
         type="submit"
         disabled={guardando}
-        className="w-full bg-slate-800 text-white rounded px-4 py-2 disabled:opacity-50"
+        className="w-full bg-indigo-600 text-white rounded-xl px-4 py-2.5 font-medium shadow-sm shadow-indigo-200 hover:bg-indigo-700 active:bg-indigo-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {guardando ? 'Guardando...' : 'Siguiente'}
       </button>

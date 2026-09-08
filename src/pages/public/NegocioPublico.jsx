@@ -43,12 +43,12 @@ export default function NegocioPublico() {
   const redes = negocio.redes_sociales ?? {}
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 py-10">
-      <div className="w-full max-w-md bg-white rounded-lg shadow p-6 space-y-4 text-center">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center px-4 py-10">
+      <div className="w-full max-w-md bg-white rounded-3xl shadow-lg shadow-slate-200 border border-slate-100 p-8 space-y-4 text-center">
         {negocio.logo_url && (
-          <img src={negocio.logo_url} alt={negocio.nombre} className="w-20 h-20 mx-auto rounded-full object-cover" />
+          <img src={negocio.logo_url} alt={negocio.nombre} className="w-24 h-24 mx-auto rounded-full object-cover ring-4 ring-indigo-50" />
         )}
-        <h1 className="text-2xl font-semibold text-slate-800">{negocio.nombre}</h1>
+        <h1 className="text-2xl font-bold text-slate-800 tracking-tight">{negocio.nombre}</h1>
         {negocio.descripcion && <p className="text-slate-600">{negocio.descripcion}</p>}
 
         <div className="text-sm text-slate-500 space-y-1">
@@ -66,11 +66,11 @@ export default function NegocioPublico() {
         <div className="space-y-2 pt-2">
           <Link
             to={`/${slug}/reservar`}
-            className="block bg-slate-800 text-white rounded px-4 py-2"
+            className="block bg-indigo-600 text-white rounded-xl px-4 py-2.5 font-medium shadow-sm shadow-indigo-200 hover:bg-indigo-700 active:bg-indigo-800 transition"
           >
             Nuevo turno
           </Link>
-          <Link to={`/${slug}/mi-turno`} className="block text-sm text-slate-500 underline">
+          <Link to={`/${slug}/mi-turno`} className="block text-sm text-indigo-600 hover:text-indigo-700 font-medium transition">
             Ver o modificar turno
           </Link>
         </div>

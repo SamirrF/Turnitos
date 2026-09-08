@@ -42,7 +42,7 @@ export default function PasoDatosNegocio({ negocio, onCompletado }) {
           type="url"
           value={logoUrl}
           onChange={(e) => setLogoUrl(e.target.value)}
-          className="mt-1 w-full border rounded px-3 py-2"
+          className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
         />
       </div>
 
@@ -51,7 +51,7 @@ export default function PasoDatosNegocio({ negocio, onCompletado }) {
         <textarea
           value={descripcion}
           onChange={(e) => setDescripcion(e.target.value)}
-          className="mt-1 w-full border rounded px-3 py-2"
+          className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
           rows={3}
         />
       </div>
@@ -63,7 +63,7 @@ export default function PasoDatosNegocio({ negocio, onCompletado }) {
             type="text"
             value={instagram}
             onChange={(e) => setInstagram(e.target.value)}
-            className="mt-1 w-full border rounded px-3 py-2"
+            className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
           />
         </div>
         <div>
@@ -72,7 +72,7 @@ export default function PasoDatosNegocio({ negocio, onCompletado }) {
             type="text"
             value={facebook}
             onChange={(e) => setFacebook(e.target.value)}
-            className="mt-1 w-full border rounded px-3 py-2"
+            className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
           />
         </div>
         <div>
@@ -81,7 +81,7 @@ export default function PasoDatosNegocio({ negocio, onCompletado }) {
             type="text"
             value={whatsapp}
             onChange={(e) => setWhatsapp(e.target.value)}
-            className="mt-1 w-full border rounded px-3 py-2"
+            className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
           />
         </div>
       </div>
@@ -92,7 +92,7 @@ export default function PasoDatosNegocio({ negocio, onCompletado }) {
           type="text"
           value={direccion}
           onChange={(e) => setDireccion(e.target.value)}
-          className="mt-1 w-full border rounded px-3 py-2"
+          className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
         />
       </div>
 
@@ -102,7 +102,7 @@ export default function PasoDatosNegocio({ negocio, onCompletado }) {
           type="text"
           value={telefono}
           onChange={(e) => setTelefono(e.target.value)}
-          className="mt-1 w-full border rounded px-3 py-2"
+          className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
         />
       </div>
 
@@ -111,7 +111,7 @@ export default function PasoDatosNegocio({ negocio, onCompletado }) {
       <button
         type="submit"
         disabled={guardando}
-        className="w-full bg-slate-800 text-white rounded px-4 py-2 disabled:opacity-50"
+        className="w-full bg-indigo-600 text-white rounded-xl px-4 py-2.5 font-medium shadow-sm shadow-indigo-200 hover:bg-indigo-700 active:bg-indigo-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {guardando ? 'Guardando...' : 'Siguiente'}
       </button>

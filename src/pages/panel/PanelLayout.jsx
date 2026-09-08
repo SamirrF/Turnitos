@@ -4,8 +4,8 @@ import { supabase } from '../../lib/supabaseClient'
 import { useNegocioActual } from '../../lib/useNegocioActual'
 
 const linkClase = ({ isActive }) =>
-  `px-3 py-2 rounded text-sm font-medium ${
-    isActive ? 'bg-slate-800 text-white' : 'text-slate-600 hover:bg-slate-100'
+  `px-3 py-2 rounded-xl text-sm font-medium transition ${
+    isActive ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-200' : 'text-slate-600 hover:bg-slate-100'
   }`
 
 export default function PanelLayout() {
@@ -32,11 +32,11 @@ export default function PanelLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="bg-white border-b">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100">
+      <header className="bg-white/80 backdrop-blur border-b border-slate-100 sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <span className="font-semibold text-slate-800">{negocio.nombre}</span>
+            <span className="font-bold text-slate-800 tracking-tight">{negocio.nombre}</span>
             <nav className="flex gap-1">
               <NavLink to="agenda" className={linkClase}>
                 Agenda
@@ -55,7 +55,7 @@ export default function PanelLayout() {
               </NavLink>
             </nav>
           </div>
-          <button onClick={cerrarSesion} className="text-sm text-slate-500 hover:text-slate-800">
+          <button onClick={cerrarSesion} className="text-sm text-slate-500 hover:text-indigo-600 transition">
             Cerrar sesión
           </button>
         </div>

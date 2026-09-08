@@ -63,13 +63,13 @@ export default function TurnoDetalle({ turno, onCerrar, onActualizado }) {
           <button
             onClick={completar}
             disabled={marcando}
-            className="w-full border border-slate-800 text-slate-800 rounded px-4 py-2 disabled:opacity-50"
+            className="w-full border border-slate-200 text-slate-700 rounded-xl px-4 py-2.5 font-medium hover:bg-slate-50 transition disabled:opacity-50"
           >
             {marcando ? 'Guardando...' : 'Marcar como completado'}
           </button>
         )}
 
-        <button onClick={onCerrar} className="w-full bg-slate-800 text-white rounded px-4 py-2">
+        <button onClick={onCerrar} className="w-full bg-indigo-600 text-white rounded-xl px-4 py-2.5 font-medium shadow-sm shadow-indigo-200 hover:bg-indigo-700 active:bg-indigo-800 transition">
           Cerrar
         </button>
       </div>

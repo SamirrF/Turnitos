@@ -186,7 +186,7 @@ export default function Reservar() {
     const servicioElegido = servicios.find((s) => s.id === turnoCreado.servicio_id)
     const estilistaAsignado = estilistas.find((e) => e.id === turnoCreado.estilista_id)
     return (
-      <div className="min-h-screen bg-slate-50 px-4 py-10">
+      <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 px-4 py-10">
         <div className="max-w-md mx-auto">
           <ConfirmacionTurno
             turno={turnoCreado}
@@ -201,11 +201,11 @@ export default function Reservar() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 px-4 py-10">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 px-4 py-10">
       <div className="max-w-2xl mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-xl font-semibold text-slate-800">Reservar en {negocio.nombre}</h1>
-          <Link to={`/${slug}`} className="text-sm text-slate-500 underline">
+          <Link to={`/${slug}`} className="text-sm text-indigo-600 hover:text-indigo-700 font-medium transition">
             Volver
           </Link>
         </div>
@@ -269,8 +269,10 @@ export default function Reservar() {
 
         {servicioId && (
           <section className="space-y-2">
-            <h2 className="text-sm font-medium text-slate-500">3. Elegí una fecha</h2>
-            {cargandoDias && <p className="text-slate-400 text-xs">Actualizando disponibilidad...</p>}
+            <div className="flex items-center gap-2">
+              <h2 className="text-sm font-medium text-slate-500">3. Elegí una fecha</h2>
+              {cargandoDias && <span className="text-indigo-400 text-xs animate-pulse">Actualizando disponibilidad...</span>}
+            </div>
             <Calendario
               mesReferencia={mesReferencia}
               fechasDisponibles={fechasDisponibles}
@@ -325,7 +327,7 @@ export default function Reservar() {
                   type="text"
                   value={clienteNombre}
                   onChange={(e) => setClienteNombre(e.target.value)}
-                  className="mt-1 w-full border rounded px-3 py-2 bg-white"
+                  className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
                   required
                 />
               </div>
@@ -336,7 +338,7 @@ export default function Reservar() {
                   type="email"
                   value={clienteEmail}
                   onChange={(e) => setClienteEmail(e.target.value)}
-                  className="mt-1 w-full border rounded px-3 py-2 bg-white"
+                  className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
                   required
                 />
               </div>
@@ -347,7 +349,7 @@ export default function Reservar() {
                   type="tel"
                   value={clienteTelefono}
                   onChange={(e) => setClienteTelefono(e.target.value)}
-                  className="mt-1 w-full border rounded px-3 py-2 bg-white"
+                  className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
                   required
                 />
               </div>
@@ -357,7 +359,7 @@ export default function Reservar() {
                 <textarea
                   value={clienteNota}
                   onChange={(e) => setClienteNota(e.target.value)}
-                  className="mt-1 w-full border rounded px-3 py-2 bg-white"
+                  className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
                   rows={2}
                 />
               </div>
@@ -366,7 +368,7 @@ export default function Reservar() {
             <button
               type="submit"
               disabled={enviando}
-              className="w-full bg-slate-800 text-white rounded px-4 py-2 disabled:opacity-50"
+              className="w-full bg-indigo-600 text-white rounded-xl px-4 py-2.5 font-medium shadow-sm shadow-indigo-200 hover:bg-indigo-700 active:bg-indigo-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {enviando ? 'Confirmando...' : 'Confirmar turno'}
             </button>

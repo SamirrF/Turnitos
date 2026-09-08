@@ -27,11 +27,11 @@ export default function SuperAdminLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="bg-white border-b">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100">
+      <header className="bg-white/80 backdrop-blur border-b border-slate-100 sticky top-0 z-10">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
-          <span className="font-semibold text-slate-800">Turnitos — Super Admin</span>
-          <button onClick={cerrarSesion} className="text-sm text-slate-500 hover:text-slate-800">
+          <span className="font-bold text-slate-800 tracking-tight">Turnitos <span className="text-indigo-600">Super Admin</span></span>
+          <button onClick={cerrarSesion} className="text-sm text-slate-500 hover:text-indigo-600 transition">
             Cerrar sesión
           </button>
         </div>

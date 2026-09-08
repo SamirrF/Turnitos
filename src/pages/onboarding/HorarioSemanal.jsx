@@ -50,14 +50,14 @@ export default function HorarioSemanal({ value, onChange }) {
                   type="time"
                   value={franja.inicio}
                   onChange={(e) => setHora(key, 'inicio', e.target.value)}
-                  className="border rounded px-2 py-1"
+                  className="border border-slate-200 rounded-lg px-2 py-1 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
                 />
                 <span className="text-slate-400">a</span>
                 <input
                   type="time"
                   value={franja.fin}
                   onChange={(e) => setHora(key, 'fin', e.target.value)}
-                  className="border rounded px-2 py-1"
+                  className="border border-slate-200 rounded-lg px-2 py-1 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
                 />
               </>
             ) : (

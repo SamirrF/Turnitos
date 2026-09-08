@@ -35,7 +35,7 @@ export default function Onboarding() {
   const paso = PASOS[pasoIndex]
 
   return (
-    <div className="min-h-screen bg-slate-50 px-4 py-10">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 px-4 py-10">
       <div className="max-w-xl mx-auto bg-white rounded-lg shadow p-6">
         {paso === 'datos' && <PasoDatosNegocio negocio={negocio} onCompletado={irAlSiguientePaso} />}
         {paso === 'horario' && <PasoHorario negocio={negocio} onCompletado={irAlSiguientePaso} />}

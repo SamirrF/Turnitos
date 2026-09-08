@@ -175,24 +175,24 @@ export default function MiTurno() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 px-4 py-10">
+    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 px-4 py-10">
       <div className="max-w-md mx-auto space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-xl font-semibold text-slate-800">Mi turno</h1>
-          <Link to={`/${slug}`} className="text-sm text-slate-500 underline">
+          <Link to={`/${slug}`} className="text-sm text-indigo-600 hover:text-indigo-700 font-medium transition">
             Volver
           </Link>
         </div>
 
         {!turno && (
           <div className="space-y-6">
-            <form onSubmit={handleBuscarSubmit} className="bg-white rounded-lg shadow p-6 space-y-3">
+            <form onSubmit={handleBuscarSubmit} className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 space-y-3">
               <label className="block text-sm font-medium text-slate-700">Código de gestión</label>
               <input
                 type="text"
                 value={tokenInput}
                 onChange={(e) => setTokenInput(e.target.value)}
-                className="w-full border rounded px-3 py-2"
+                className="w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
                 placeholder="El código que te dimos al confirmar tu turno"
                 required
               />
@@ -200,25 +200,25 @@ export default function MiTurno() {
               <button
                 type="submit"
                 disabled={cargando}
-                className="w-full bg-slate-800 text-white rounded px-4 py-2 disabled:opacity-50"
+                className="w-full bg-indigo-600 text-white rounded-xl px-4 py-2.5 font-medium shadow-sm shadow-indigo-200 hover:bg-indigo-700 active:bg-indigo-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {cargando ? 'Buscando...' : 'Buscar'}
               </button>
             </form>
 
-            <form onSubmit={handleEmailSubmit} className="bg-white rounded-lg shadow p-6 space-y-3">
+            <form onSubmit={handleEmailSubmit} className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 space-y-3">
               <label className="block text-sm font-medium text-slate-700">¿No tenés el código? Ingresá tu email</label>
               <input
                 type="email"
                 value={emailBusqueda}
                 onChange={(e) => setEmailBusqueda(e.target.value)}
-                className="w-full border rounded px-3 py-2"
+                className="w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
                 required
               />
               <button
                 type="submit"
                 disabled={enviandoEmail}
-                className="w-full border border-slate-800 text-slate-800 rounded px-4 py-2 disabled:opacity-50"
+                className="w-full border border-slate-200 text-slate-700 rounded-xl px-4 py-2.5 font-medium hover:bg-slate-50 transition disabled:opacity-50"
               >
                 {enviandoEmail ? 'Enviando...' : 'Enviar'}
               </button>
@@ -228,7 +228,7 @@ export default function MiTurno() {
         )}
 
         {turno && vista === 'detalle' && (
-          <div className="bg-white rounded-lg shadow p-6 space-y-3">
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 space-y-3">
             <div className="flex items-center justify-between">
               <h2 className="font-medium text-slate-800">{turno.negocio_nombre}</h2>
               <EstadoBadge estado={turno.estado} />
@@ -260,13 +260,13 @@ export default function MiTurno() {
               <div className="flex gap-2 pt-2">
                 <button
                   onClick={iniciarReprogramacion}
-                  className="flex-1 border border-slate-800 text-slate-800 rounded px-4 py-2 text-sm"
+                  className="flex-1 border border-slate-200 text-slate-700 rounded-xl px-4 py-2.5 text-sm font-medium hover:bg-slate-50 transition"
                 >
                   Reprogramar turno
                 </button>
                 <button
                   onClick={() => setVista('cancelar')}
-                  className="flex-1 border border-red-600 text-red-600 rounded px-4 py-2 text-sm"
+                  className="flex-1 border border-red-200 text-red-600 rounded-xl px-4 py-2.5 text-sm font-medium hover:bg-red-50 transition"
                 >
                   Cancelar turno
                 </button>
@@ -276,7 +276,7 @@ export default function MiTurno() {
         )}
 
         {turno && vista === 'cancelar' && (
-          <div className="bg-white rounded-lg shadow p-6 space-y-4">
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 space-y-4">
             <h2 className="font-medium text-slate-800">Cancelar turno</h2>
             <dl className="text-sm space-y-1">
               <p>
@@ -295,12 +295,12 @@ export default function MiTurno() {
             <p className="text-sm text-slate-600">¿Seguro que querés cancelar este turno?</p>
             {errorAccion && <p className="text-red-600 text-sm">{errorAccion}</p>}
             <div className="flex gap-2">
-              <button onClick={confirmarCancelacion} className="flex-1 bg-red-600 text-white rounded px-4 py-2 text-sm">
+              <button onClick={confirmarCancelacion} className="flex-1 bg-red-600 text-white rounded-xl px-4 py-2.5 text-sm font-medium shadow-sm shadow-red-200 hover:bg-red-700 transition">
                 Sí, cancelar
               </button>
               <button
                 onClick={() => setVista('detalle')}
-                className="flex-1 border border-slate-300 text-slate-600 rounded px-4 py-2 text-sm"
+                className="flex-1 border border-slate-200 text-slate-600 rounded-xl px-4 py-2.5 text-sm font-medium hover:bg-slate-50 transition"
               >
                 Volver
               </button>
@@ -309,7 +309,7 @@ export default function MiTurno() {
         )}
 
         {turno && vista === 'reprogramar' && (
-          <form onSubmit={confirmarReprogramacion} className="bg-white rounded-lg shadow p-6 space-y-4">
+          <form onSubmit={confirmarReprogramacion} className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 space-y-4">
             <h2 className="font-medium text-slate-800">Reprogramar turno</h2>
             <dl className="text-sm space-y-1">
               <p>
@@ -365,14 +365,14 @@ export default function MiTurno() {
               <button
                 type="submit"
                 disabled={!horaSeleccionada || guardandoReprogramacion}
-                className="flex-1 bg-slate-800 text-white rounded px-4 py-2 text-sm disabled:opacity-50"
+                className="flex-1 bg-indigo-600 text-white rounded-xl px-4 py-2.5 font-medium shadow-sm shadow-indigo-200 hover:bg-indigo-700 active:bg-indigo-800 transition text-sm disabled:opacity-50"
               >
                 {guardandoReprogramacion ? 'Guardando...' : 'Guardar'}
               </button>
               <button
                 type="button"
                 onClick={() => setVista('detalle')}
-                className="flex-1 border border-slate-300 text-slate-600 rounded px-4 py-2 text-sm"
+                className="flex-1 border border-slate-200 text-slate-600 rounded-xl px-4 py-2.5 text-sm font-medium hover:bg-slate-50 transition"
               >
                 Volver
               </button>

@@ -91,7 +91,7 @@ export default function PanelServicios() {
       <div>
         <h1 className="text-xl font-semibold text-slate-800 mb-4">Servicios</h1>
 
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 space-y-4">
           <h2 className="text-sm font-medium text-slate-500">
             {editandoId ? 'Editar servicio' : 'Nuevo servicio'}
           </h2>
@@ -102,7 +102,7 @@ export default function PanelServicios() {
               type="text"
               value={form.nombre}
               onChange={(e) => setForm({ ...form, nombre: e.target.value })}
-              className="mt-1 w-full border rounded px-3 py-2"
+              className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
               required
             />
           </div>
@@ -112,7 +112,7 @@ export default function PanelServicios() {
             <textarea
               value={form.descripcion}
               onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
-              className="mt-1 w-full border rounded px-3 py-2"
+              className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
               rows={2}
             />
           </div>
@@ -126,7 +126,7 @@ export default function PanelServicios() {
                 step="0.01"
                 value={form.precio}
                 onChange={(e) => setForm({ ...form, precio: e.target.value })}
-                className="mt-1 w-full border rounded px-3 py-2"
+                className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
                 required
               />
             </div>
@@ -138,7 +138,7 @@ export default function PanelServicios() {
                 step="1"
                 value={form.duracion_minutos}
                 onChange={(e) => setForm({ ...form, duracion_minutos: e.target.value })}
-                className="mt-1 w-full border rounded px-3 py-2"
+                className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
                 required
               />
             </div>
@@ -150,12 +150,12 @@ export default function PanelServicios() {
             <button
               type="submit"
               disabled={guardando}
-              className="bg-slate-800 text-white rounded px-4 py-2 disabled:opacity-50"
+              className="bg-indigo-600 text-white rounded-xl px-4 py-2.5 font-medium shadow-sm shadow-indigo-200 hover:bg-indigo-700 active:bg-indigo-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {guardando ? 'Guardando...' : editandoId ? 'Guardar cambios' : 'Agregar servicio'}
             </button>
             {editandoId && (
-              <button type="button" onClick={cancelarEdicion} className="text-slate-500 px-4 py-2">
+              <button type="button" onClick={cancelarEdicion} className="text-slate-500 px-4 py-2.5 rounded-xl hover:bg-slate-100 transition">
                 Cancelar
               </button>
             )}
@@ -172,12 +172,12 @@ export default function PanelServicios() {
         ) : (
           <ul className="space-y-2">
             {servicios.map((s) => (
-              <li key={s.id} className="bg-white rounded-lg shadow p-4 flex items-center justify-between">
+              <li key={s.id} className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 flex items-center justify-between">
                 <div>
                   <p className="font-medium text-slate-800">
                     {s.nombre}{' '}
                     {!s.activo && (
-                      <span className="text-xs bg-slate-200 text-slate-600 rounded px-2 py-0.5 ml-1">
+                      <span className="text-xs bg-slate-200 text-slate-600 rounded-full px-2 py-0.5 ml-1">
                         Inactivo
                       </span>
                     )}
@@ -187,10 +187,10 @@ export default function PanelServicios() {
                   </p>
                 </div>
                 <div className="flex gap-2">
-                  <button onClick={() => iniciarEdicion(s)} className="text-sm text-slate-600 hover:underline">
+                  <button onClick={() => iniciarEdicion(s)} className="text-sm text-indigo-600 hover:text-indigo-700 font-medium transition">
                     Editar
                   </button>
-                  <button onClick={() => toggleActivo(s)} className="text-sm text-slate-600 hover:underline">
+                  <button onClick={() => toggleActivo(s)} className="text-sm text-indigo-600 hover:text-indigo-700 font-medium transition">
                     {s.activo ? 'Desactivar' : 'Activar'}
                   </button>
                 </div>

@@ -62,7 +62,7 @@ export default function PasoEstilista({ negocio, onCompletado }) {
     return (
       <div className="space-y-4">
         <h2 className="text-lg font-semibold text-slate-800">Paso 4 de 4 · Tu primer estilista</h2>
-        <div className="border rounded px-4 py-3 bg-slate-50">
+        <div className="border border-slate-200 rounded-xl px-4 py-3 bg-slate-50">
           <p className="font-medium text-slate-800">{estilistaExistente.nombre}</p>
           {estilistaExistente.especialidad && (
             <p className="text-sm text-slate-600">{estilistaExistente.especialidad}</p>
@@ -71,7 +71,7 @@ export default function PasoEstilista({ negocio, onCompletado }) {
         <button
           type="button"
           onClick={() => onCompletado()}
-          className="w-full bg-slate-800 text-white rounded px-4 py-2"
+          className="w-full bg-indigo-600 text-white rounded-xl px-4 py-2.5 font-medium shadow-sm shadow-indigo-200 hover:bg-indigo-700 active:bg-indigo-800 transition"
         >
           Finalizar
         </button>
@@ -89,7 +89,7 @@ export default function PasoEstilista({ negocio, onCompletado }) {
           type="text"
           value={nombre}
           onChange={(e) => setNombre(e.target.value)}
-          className="mt-1 w-full border rounded px-3 py-2"
+          className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
           required
         />
       </div>
@@ -100,7 +100,7 @@ export default function PasoEstilista({ negocio, onCompletado }) {
           type="url"
           value={fotoUrl}
           onChange={(e) => setFotoUrl(e.target.value)}
-          className="mt-1 w-full border rounded px-3 py-2"
+          className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
         />
       </div>
 
@@ -110,7 +110,7 @@ export default function PasoEstilista({ negocio, onCompletado }) {
           type="text"
           value={especialidad}
           onChange={(e) => setEspecialidad(e.target.value)}
-          className="mt-1 w-full border rounded px-3 py-2"
+          className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
         />
       </div>
 
@@ -124,7 +124,7 @@ export default function PasoEstilista({ negocio, onCompletado }) {
       <button
         type="submit"
         disabled={guardando}
-        className="w-full bg-slate-800 text-white rounded px-4 py-2 disabled:opacity-50"
+        className="w-full bg-indigo-600 text-white rounded-xl px-4 py-2.5 font-medium shadow-sm shadow-indigo-200 hover:bg-indigo-700 active:bg-indigo-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {guardando ? 'Guardando...' : 'Finalizar'}
       </button>
