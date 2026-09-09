@@ -117,13 +117,13 @@ export default function PanelAgenda() {
             <li
               key={t.id}
               onClick={() => setTurnoSeleccionado(t)}
-              className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 flex items-center justify-between cursor-pointer hover:bg-slate-50"
+              className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 cursor-pointer hover:bg-slate-50"
             >
-              <div>
+              <div className="min-w-0">
                 <p className="font-medium text-slate-800">
                   {t.fecha} · {t.hora_inicio} - {t.hora_fin}
                 </p>
-                <p className="text-sm text-slate-600">
+                <p className="text-sm text-slate-600 break-words">
                   {t.servicio?.nombre} · {t.estilista?.nombre ?? 'Cualquiera disponible'} · {t.cliente_nombre}
                 </p>
               </div>

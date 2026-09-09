@@ -39,7 +39,7 @@ export default function HorarioSemanal({ value, onChange }) {
         const abierto = franjas.length > 0
         const franja = franjas[0] ?? FRANJA_DEFAULT
         return (
-          <div key={key} className="flex items-center gap-3">
+          <div key={key} className="flex flex-wrap items-center gap-3">
             <label className="flex items-center gap-2 w-32 shrink-0">
               <input type="checkbox" checked={abierto} onChange={(e) => toggleAbierto(key, e.target.checked)} />
               <span className="text-sm text-slate-700">{label}</span>

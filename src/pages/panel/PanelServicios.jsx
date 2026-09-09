@@ -117,7 +117,7 @@ export default function PanelServicios() {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-sm font-medium text-slate-700">Precio</label>
               <input
@@ -172,9 +172,9 @@ export default function PanelServicios() {
         ) : (
           <ul className="space-y-2">
             {servicios.map((s) => (
-              <li key={s.id} className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 flex items-center justify-between">
-                <div>
-                  <p className="font-medium text-slate-800">
+              <li key={s.id} className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="font-medium text-slate-800 break-words">
                     {s.nombre}{' '}
                     {!s.activo && (
                       <span className="text-xs bg-slate-200 text-slate-600 rounded-full px-2 py-0.5 ml-1">
@@ -186,7 +186,7 @@ export default function PanelServicios() {
                     ${s.precio} · {s.duracion_minutos} min
                   </p>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 shrink-0">
                   <button onClick={() => iniciarEdicion(s)} className="text-sm text-indigo-600 hover:text-indigo-700 font-medium transition">
                     Editar
                   </button>

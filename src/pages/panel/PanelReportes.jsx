@@ -91,7 +91,7 @@ export default function PanelReportes() {
         <p className="text-slate-500">Cargando...</p>
       ) : (
         <>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-4">
               <p className="text-sm text-slate-500">Turnos en el período</p>
               <p className="text-2xl font-semibold text-slate-800">{totalTurnos}</p>

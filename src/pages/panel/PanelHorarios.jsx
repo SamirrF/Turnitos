@@ -143,14 +143,14 @@ export default function PanelHorarios() {
         ) : (
           <ul className="space-y-2">
             {dias.map((d) => (
-              <li key={d.id} className="flex items-center justify-between border border-slate-200 rounded-xl px-3 py-2">
-                <span className="text-sm text-slate-700">
+              <li key={d.id} className="flex flex-wrap items-center justify-between gap-2 border border-slate-200 rounded-xl px-3 py-2">
+                <span className="text-sm text-slate-700 break-words">
                   {d.fecha}
                   {d.motivo && <span className="text-slate-500"> · {d.motivo}</span>}
                 </span>
                 <button
                   onClick={() => quitarDiaNoLaborable(d.id)}
-                  className="text-sm text-red-600 hover:underline"
+                  className="text-sm text-red-600 hover:underline shrink-0"
                 >
                   Quitar
                 </button>
