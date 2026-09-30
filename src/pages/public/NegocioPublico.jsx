@@ -2,6 +2,25 @@ import { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { obtenerNegocioPorSlug } from '../../lib/publicoApi'
 
+// Acepta tanto una URL completa como un usuario suelto ("@gringo" o "gringo").
+// Solo devuelve URLs http(s) para no renderizar hrefs arbitrarios (ej. javascript:).
+function urlRed(valor, base) {
+  const v = valor?.trim()
+  if (!v) return null
+  if (/^https?:\/\//i.test(v)) return v
+  if (/^(www\.)?(instagram|facebook)\.com\//i.test(v)) return `https://${v}`
+  return base + encodeURIComponent(v.replace(/^@/, ''))
+}
+
+// wa.me necesita el número con código de país. Si viene un número local
+// argentino de 10 dígitos (sin 54), se le antepone 549.
+function urlWhatsapp(valor) {
+  let digitos = valor?.replace(/\D/g, '')
+  if (!digitos) return null
+  if (digitos.length === 10) digitos = `549${digitos}`
+  return `https://wa.me/${digitos}`
+}
+
 export default function NegocioPublico() {
   const { slug } = useParams()
   const [negocio, setNegocio] = useState(null)
@@ -41,6 +60,11 @@ export default function NegocioPublico() {
   }
 
   const redes = negocio.redes_sociales ?? {}
+  const redesLinks = [
+    { label: 'Instagram', href: urlRed(redes.instagram, 'https://www.instagram.com/') },
+    { label: 'Facebook', href: urlRed(redes.facebook, 'https://www.facebook.com/') },
+    { label: 'WhatsApp', href: urlWhatsapp(redes.whatsapp) },
+  ].filter((r) => r.href)
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 flex items-center justify-center px-4 py-10">
@@ -49,17 +73,25 @@ export default function NegocioPublico() {
           <img src={negocio.logo_url} alt={negocio.nombre} className="w-24 h-24 mx-auto rounded-full object-cover ring-4 ring-indigo-50" />
         )}
         <h1 className="text-2xl font-bold text-slate-800 tracking-tight">{negocio.nombre}</h1>
-        {negocio.descripcion && <p className="text-slate-600">{negocio.descripcion}</p>}
+        {negocio.descripcion && <p className="text-slate-600 break-words">{negocio.descripcion}</p>}
 
-        <div className="text-sm text-slate-500 space-y-1">
+        <div className="text-sm text-slate-500 space-y-1 break-words">
           {negocio.direccion && <p>{negocio.direccion}</p>}
           {negocio.telefono && <p>{negocio.telefono}</p>}
-          {(redes.instagram || redes.facebook || redes.whatsapp) && (
-            <p className="flex justify-center gap-3 pt-1">
-              {redes.instagram && <span>Instagram: {redes.instagram}</span>}
-              {redes.facebook && <span>Facebook: {redes.facebook}</span>}
-              {redes.whatsapp && <span>WhatsApp: {redes.whatsapp}</span>}
-            </p>
+          {redesLinks.length > 0 && (
+            <div className="flex flex-wrap justify-center gap-2 pt-2">
+              {redesLinks.map(({ label, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-600 font-medium hover:bg-indigo-100 transition"
+                >
+                  {label}
+                </a>
+              ))}
+            </div>
           )}
         </div>
 

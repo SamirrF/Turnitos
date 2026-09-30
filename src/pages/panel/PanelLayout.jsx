@@ -19,6 +19,7 @@ const ENLACES = [
   { to: 'reportes', label: 'Reportes' },
   { to: 'servicios', label: 'Servicios' },
   { to: 'estilistas', label: 'Estilistas' },
+  { to: 'negocio', label: 'Mi negocio' },
 ]
 
 export default function PanelLayout() {
