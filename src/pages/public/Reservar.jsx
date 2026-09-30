@@ -9,14 +9,9 @@ import {
   crearTurno,
 } from '../../lib/publicoApi'
 import { emailValido, telefonoValido } from '../../lib/validacion'
-import { hoyISO, inicioDeMes, sumarDias } from '../../lib/fechas'
+import { hoyISO, inicioDeMes, sumarDias, horaActualHHMM } from '../../lib/fechas'
 import Calendario from './Calendario.jsx'
 import ConfirmacionTurno from './ConfirmacionTurno.jsx'
-
-function horaActualHHMM() {
-  const ahora = new Date()
-  return `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`
-}
 
 export default function Reservar() {
   const { slug } = useParams()

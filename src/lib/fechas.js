@@ -41,3 +41,8 @@ export function finDeMes(fechaISO) {
   const date = parseISO(fechaISO)
   return toISO(new Date(date.getFullYear(), date.getMonth() + 1, 0))
 }
+
+export function horaActualHHMM() {
+  const ahora = new Date()
+  return `${String(ahora.getHours()).padStart(2, '0')}:${String(ahora.getMinutes()).padStart(2, '0')}`
+}

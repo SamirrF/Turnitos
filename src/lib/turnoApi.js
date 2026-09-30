@@ -17,6 +17,36 @@ export async function listarTurnos(negocioId, { desde, hasta, estilistaId } = {}
   return data ?? []
 }
 
+export async function crearTurnoPanel({
+  servicioId,
+  estilistaId,
+  fecha,
+  horaInicio,
+  clienteNombre,
+  clienteTelefono,
+  clienteEmail,
+  nota,
+}) {
+  const { data, error } = await supabase.rpc('crear_turno_panel', {
+    p_servicio_id: servicioId,
+    p_fecha: fecha,
+    p_hora_inicio: horaInicio,
+    p_cliente_nombre: clienteNombre,
+    p_cliente_telefono: clienteTelefono,
+    p_cliente_email: clienteEmail || null,
+    p_nota: nota || null,
+    p_estilista_id: estilistaId || null,
+  })
+  if (error) throw error
+  return data
+}
+
+export async function cancelarTurnoPanel(turnoId) {
+  const { data, error } = await supabase.rpc('cancelar_turno_panel', { p_turno_id: turnoId })
+  if (error) throw error
+  return data
+}
+
 export async function marcarTurnoCompletado(turnoId) {
   const { data, error } = await supabase.rpc('marcar_turno_completado', { p_turno_id: turnoId })
   if (error) throw error
