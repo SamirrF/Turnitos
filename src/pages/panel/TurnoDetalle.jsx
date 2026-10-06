@@ -2,6 +2,7 @@ import { useState } from 'react'
 import EstadoBadge from './EstadoBadge.jsx'
 import { marcarTurnoCompletado, cancelarTurnoPanel } from '../../lib/turnoApi'
 import { hoyISO } from '../../lib/fechas'
+import { etiquetaMetodoPago } from '../../lib/metodosPago'
 
 function Campo({ etiqueta, valor }) {
   if (!valor) return null
@@ -59,6 +60,7 @@ export default function TurnoDetalle({ turno, onCerrar, onActualizado }) {
           <Campo etiqueta="Fecha" valor={turno.fecha} />
           <Campo etiqueta="Hora" valor={`${turno.hora_inicio} - ${turno.hora_fin}`} />
           <Campo etiqueta="Monto" valor={`$${turno.monto}`} />
+          <Campo etiqueta="Método de pago" valor={etiquetaMetodoPago(turno.metodo_pago)} />
           <Campo etiqueta="Cliente" valor={turno.cliente_nombre} />
           <Campo etiqueta="Email" valor={turno.cliente_email} />
           <Campo etiqueta="Teléfono" valor={turno.cliente_telefono} />

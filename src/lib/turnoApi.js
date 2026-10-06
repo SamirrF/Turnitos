@@ -26,6 +26,7 @@ export async function crearTurnoPanel({
   clienteTelefono,
   clienteEmail,
   nota,
+  metodoPago,
 }) {
   const { data, error } = await supabase.rpc('crear_turno_panel', {
     p_servicio_id: servicioId,
@@ -36,6 +37,7 @@ export async function crearTurnoPanel({
     p_cliente_email: clienteEmail || null,
     p_nota: nota || null,
     p_estilista_id: estilistaId || null,
+    p_metodo_pago: metodoPago,
   })
   if (error) throw error
   return data

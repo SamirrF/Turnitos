@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { etiquetaMetodoPago } from '../../lib/metodosPago'
 
 export default function ConfirmacionTurno({ turno, negocio, servicio, estilista, slug }) {
   return (
@@ -29,6 +30,12 @@ export default function ConfirmacionTurno({ turno, negocio, servicio, estilista,
           <span className="font-medium text-slate-600">Hora: </span>
           {turno.hora_inicio.slice(0, 5)} - {turno.hora_fin.slice(0, 5)}
         </p>
+        {turno.metodo_pago && (
+          <p>
+            <span className="font-medium text-slate-600">Método de pago: </span>
+            {etiquetaMetodoPago(turno.metodo_pago)}
+          </p>
+        )}
         <p>
           <span className="font-medium text-slate-600">A nombre de: </span>
           {turno.cliente_nombre}

@@ -4,6 +4,7 @@ import { obtenerHorariosDisponibles } from '../../lib/publicoApi'
 import { crearTurnoPanel } from '../../lib/turnoApi'
 import { emailValido, telefonoValido } from '../../lib/validacion'
 import { hoyISO, horaActualHHMM } from '../../lib/fechas'
+import { METODOS_PAGO } from '../../lib/metodosPago'
 
 const claseInput =
   'mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition'
@@ -23,6 +24,7 @@ export default function NuevoTurnoModal({ negocioId, fechaInicial, onCerrar, onC
   const [clienteTelefono, setClienteTelefono] = useState('')
   const [clienteEmail, setClienteEmail] = useState('')
   const [nota, setNota] = useState('')
+  const [metodoPago, setMetodoPago] = useState('')
 
   const [error, setError] = useState(null)
   const [enviando, setEnviando] = useState(false)
@@ -76,6 +78,10 @@ export default function NuevoTurnoModal({ negocioId, fechaInicial, onCerrar, onC
       setError('Email inválido')
       return
     }
+    if (!metodoPago) {
+      setError('Elegí un método de pago')
+      return
+    }
 
     setEnviando(true)
     try {
@@ -88,6 +94,7 @@ export default function NuevoTurnoModal({ negocioId, fechaInicial, onCerrar, onC
         clienteTelefono: clienteTelefono.trim(),
         clienteEmail: clienteEmail.trim(),
         nota: nota.trim(),
+        metodoPago,
       })
       onCreado?.(turno)
     } catch (err) {
@@ -187,6 +194,18 @@ export default function NuevoTurnoModal({ negocioId, fechaInicial, onCerrar, onC
           <p className="text-xs text-slate-500 mt-1">
             Si lo cargás, le llega la confirmación con un link para cancelar o reprogramar.
           </p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-slate-700">Método de pago</label>
+          <select value={metodoPago} onChange={(e) => setMetodoPago(e.target.value)} className={claseInput}>
+            <option value="">Elegí un método de pago</option>
+            {METODOS_PAGO.map((m) => (
+              <option key={m.valor} value={m.valor}>
+                {m.etiqueta}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>

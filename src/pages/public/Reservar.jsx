@@ -10,6 +10,7 @@ import {
 } from '../../lib/publicoApi'
 import { emailValido, telefonoValido } from '../../lib/validacion'
 import { hoyISO, inicioDeMes, sumarDias, horaActualHHMM } from '../../lib/fechas'
+import { METODOS_PAGO } from '../../lib/metodosPago'
 import Calendario from './Calendario.jsx'
 import ConfirmacionTurno from './ConfirmacionTurno.jsx'
 
@@ -37,6 +38,7 @@ export default function Reservar() {
   const [clienteEmail, setClienteEmail] = useState('')
   const [clienteTelefono, setClienteTelefono] = useState('')
   const [clienteNota, setClienteNota] = useState('')
+  const [metodoPago, setMetodoPago] = useState('')
   const [errorReserva, setErrorReserva] = useState(null)
   const [enviando, setEnviando] = useState(false)
   const [turnoCreado, setTurnoCreado] = useState(null)
@@ -137,6 +139,7 @@ export default function Reservar() {
     if (!clienteNombre.trim()) return setErrorReserva('El nombre es obligatorio')
     if (!emailValido(clienteEmail)) return setErrorReserva('Ingresá un email válido')
     if (!telefonoValido(clienteTelefono)) return setErrorReserva('Ingresá un teléfono válido')
+    if (!metodoPago) return setErrorReserva('Elegí un método de pago')
 
     setEnviando(true)
     try {
@@ -150,6 +153,7 @@ export default function Reservar() {
         clienteEmail,
         clienteTelefono,
         nota: clienteNota,
+        metodoPago,
       })
       setTurnoCreado(turno)
     } catch (err) {
@@ -347,6 +351,23 @@ export default function Reservar() {
                   className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
                   required
                 />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700">Método de pago</label>
+                <select
+                  value={metodoPago}
+                  onChange={(e) => setMetodoPago(e.target.value)}
+                  className="mt-1 w-full border border-slate-200 rounded-xl px-3 py-2.5 bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+                  required
+                >
+                  <option value="">Elegí un método de pago</option>
+                  {METODOS_PAGO.map((m) => (
+                    <option key={m.valor} value={m.valor}>
+                      {m.etiqueta}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div>
