@@ -50,23 +50,25 @@ export async function obtenerHorariosDisponibles(negocioId, servicioId, fecha, e
   return data ?? []
 }
 
-export async function crearTurno({
+// Crea uno o más turnos (hasta 4) del mismo servicio en la misma fecha.
+// Todo o nada: si algún horario ya no está libre, no se crea ninguno.
+export async function crearReserva({
   negocioId,
   servicioId,
   estilistaId,
   fecha,
-  horaInicio,
+  horas,
   clienteNombre,
   clienteEmail,
   clienteTelefono,
   nota,
   metodoPago,
 }) {
-  const { data, error } = await supabase.rpc('crear_turno', {
+  const { data, error } = await supabase.rpc('crear_reserva', {
     p_negocio_id: negocioId,
     p_servicio_id: servicioId,
     p_fecha: fecha,
-    p_hora_inicio: horaInicio,
+    p_horas: horas,
     p_cliente_nombre: clienteNombre,
     p_cliente_email: clienteEmail,
     p_cliente_telefono: clienteTelefono,
@@ -75,7 +77,7 @@ export async function crearTurno({
     p_metodo_pago: metodoPago,
   })
   if (error) throw error
-  return data
+  return data ?? []
 }
 
 export async function obtenerTurnoPorToken(token) {

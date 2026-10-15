@@ -6,13 +6,15 @@ import {
   listarEstilistasActivos,
   obtenerDiasDisponibles,
   obtenerHorariosDisponibles,
-  crearTurno,
+  crearReserva,
 } from '../../lib/publicoApi'
 import { emailValido, telefonoValido } from '../../lib/validacion'
 import { hoyISO, inicioDeMes, sumarDias, horaActualHHMM } from '../../lib/fechas'
 import { METODOS_PAGO } from '../../lib/metodosPago'
 import Calendario from './Calendario.jsx'
 import ConfirmacionTurno from './ConfirmacionTurno.jsx'
+
+const MAX_HORARIOS = 4
 
 export default function Reservar() {
   const { slug } = useParams()
@@ -32,7 +34,7 @@ export default function Reservar() {
 
   const [horarios, setHorarios] = useState([])
   const [cargandoHorarios, setCargandoHorarios] = useState(false)
-  const [horaSeleccionada, setHoraSeleccionada] = useState(null)
+  const [horasSeleccionadas, setHorasSeleccionadas] = useState([])
 
   const [clienteNombre, setClienteNombre] = useState('')
   const [clienteEmail, setClienteEmail] = useState('')
@@ -41,7 +43,7 @@ export default function Reservar() {
   const [metodoPago, setMetodoPago] = useState('')
   const [errorReserva, setErrorReserva] = useState(null)
   const [enviando, setEnviando] = useState(false)
-  const [turnoCreado, setTurnoCreado] = useState(null)
+  const [turnosCreados, setTurnosCreados] = useState(null)
 
   useEffect(() => {
     let activo = true
@@ -112,13 +114,26 @@ export default function Reservar() {
   function elegirServicio(id) {
     setServicioId(id)
     setFechaSeleccionada(null)
-    setHoraSeleccionada(null)
+    setHorasSeleccionadas([])
   }
 
   function elegirEstilista(id) {
     setEstilistaId(id)
     setFechaSeleccionada(null)
-    setHoraSeleccionada(null)
+    setHorasSeleccionadas([])
+  }
+
+  function elegirFecha(fecha) {
+    setFechaSeleccionada(fecha)
+    setHorasSeleccionadas([])
+  }
+
+  function alternarHora(hora) {
+    setHorasSeleccionadas((actuales) => {
+      if (actuales.includes(hora)) return actuales.filter((h) => h !== hora)
+      if (actuales.length >= MAX_HORARIOS) return actuales
+      return [...actuales, hora].sort()
+    })
   }
 
   function cambiarMes(delta) {
@@ -129,7 +144,7 @@ export default function Reservar() {
       `${nuevaFecha.getFullYear()}-${String(nuevaFecha.getMonth() + 1).padStart(2, '0')}-01`,
     )
     setFechaSeleccionada(null)
-    setHoraSeleccionada(null)
+    setHorasSeleccionadas([])
   }
 
   async function confirmarTurno(e) {
@@ -143,23 +158,27 @@ export default function Reservar() {
 
     setEnviando(true)
     try {
-      const turno = await crearTurno({
+      const turnos = await crearReserva({
         negocioId: negocio.id,
         servicioId,
         estilistaId,
         fecha: fechaSeleccionada,
-        horaInicio: horaSeleccionada.hora_inicio,
+        horas: horasSeleccionadas,
         clienteNombre,
         clienteEmail,
         clienteTelefono,
         nota: clienteNota,
         metodoPago,
       })
-      setTurnoCreado(turno)
+      setTurnosCreados(turnos)
     } catch (err) {
       if (err.message === 'Ese horario ya no está disponible') {
-        setErrorReserva('Justo se ocupó ese horario. Elegí otro de la lista actualizada.')
-        setHoraSeleccionada(null)
+        setErrorReserva(
+          horasSeleccionadas.length > 1
+            ? 'Alguno de los horarios se ocupó recién. Elegí de nuevo de la lista actualizada.'
+            : 'Justo se ocupó ese horario. Elegí otro de la lista actualizada.',
+        )
+        setHorasSeleccionadas([])
         cargarHorarios()
       } else {
         setErrorReserva(err.message ?? 'No se pudo confirmar el turno')
@@ -168,6 +187,8 @@ export default function Reservar() {
       setEnviando(false)
     }
   }
+
+  const servicioActual = servicios.find((s) => s.id === servicioId)
 
   if (cargandoNegocio) {
     return <div className="min-h-screen flex items-center justify-center text-slate-500">Cargando...</div>
@@ -181,17 +202,16 @@ export default function Reservar() {
     )
   }
 
-  if (turnoCreado) {
-    const servicioElegido = servicios.find((s) => s.id === turnoCreado.servicio_id)
-    const estilistaAsignado = estilistas.find((e) => e.id === turnoCreado.estilista_id)
+  if (turnosCreados) {
+    const servicioElegido = servicios.find((s) => s.id === turnosCreados[0]?.servicio_id)
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 px-4 py-10">
         <div className="max-w-md mx-auto">
           <ConfirmacionTurno
-            turno={turnoCreado}
+            turnos={turnosCreados}
             negocio={negocio}
             servicio={servicioElegido}
-            estilista={estilistaAsignado}
+            estilistas={estilistas}
             slug={slug}
           />
         </div>
@@ -276,7 +296,7 @@ export default function Reservar() {
               mesReferencia={mesReferencia}
               fechasDisponibles={fechasDisponibles}
               fechaSeleccionada={fechaSeleccionada}
-              onSeleccionar={setFechaSeleccionada}
+              onSeleccionar={elegirFecha}
               onCambiarMes={cambiarMes}
             />
           </section>
@@ -285,26 +305,32 @@ export default function Reservar() {
         {fechaSeleccionada && (
           <section className="space-y-2">
             <h2 className="text-sm font-medium text-slate-500">4. Elegí un horario</h2>
+            <p className="text-xs text-slate-500">
+              Si venís con alguien más, podés elegir hasta {MAX_HORARIOS} horarios.
+            </p>
             {cargandoHorarios ? (
               <p className="text-slate-500 text-sm">Buscando horarios...</p>
             ) : horarios.length === 0 ? (
               <p className="text-slate-500 text-sm">No hay horarios disponibles este día.</p>
             ) : (
               <div className="flex flex-wrap gap-2">
-                {horarios.map((h) => (
-                  <button
-                    type="button"
-                    key={h.hora_inicio}
-                    onClick={() => setHoraSeleccionada(h)}
-                    className={`border rounded px-3 py-2 text-sm bg-white ${
-                      horaSeleccionada?.hora_inicio === h.hora_inicio
-                        ? 'border-slate-800 ring-1 ring-slate-800'
-                        : 'border-slate-200'
-                    }`}
-                  >
-                    {h.hora_inicio.slice(0, 5)}
-                  </button>
-                ))}
+                {horarios.map((h) => {
+                  const elegida = horasSeleccionadas.includes(h.hora_inicio)
+                  const bloqueada = !elegida && horasSeleccionadas.length >= MAX_HORARIOS
+                  return (
+                    <button
+                      type="button"
+                      key={h.hora_inicio}
+                      onClick={() => alternarHora(h.hora_inicio)}
+                      disabled={bloqueada}
+                      className={`border rounded px-3 py-2 text-sm bg-white disabled:opacity-40 disabled:cursor-not-allowed ${
+                        elegida ? 'border-slate-800 ring-1 ring-slate-800' : 'border-slate-200'
+                      }`}
+                    >
+                      {h.hora_inicio.slice(0, 5)}
+                    </button>
+                  )
+                })}
               </div>
             )}
           </section>
@@ -312,12 +338,22 @@ export default function Reservar() {
 
         {errorReserva && <p className="text-red-600 text-sm">{errorReserva}</p>}
 
-        {horaSeleccionada && (
+        {horasSeleccionadas.length > 1 && estilistaId === '' && (
+          <p className="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2">
+            Con "Cualquiera disponible" puede que no los atienda la misma persona. Si querés que sea el mismo
+            estilista, elegilo arriba.
+          </p>
+        )}
+
+        {horasSeleccionadas.length > 0 && (
           <form onSubmit={confirmarTurno} className="space-y-4">
             <section className="space-y-2">
               <h2 className="text-sm font-medium text-slate-500">5. Tus datos</h2>
               <p className="text-sm text-slate-600">
-                {fechaSeleccionada} a las {horaSeleccionada.hora_inicio.slice(0, 5)}
+                {fechaSeleccionada} a las {horasSeleccionadas.map((h) => h.slice(0, 5)).join(', ')}
+                {horasSeleccionadas.length > 1 && servicioActual && (
+                  <> · Total ${Number(servicioActual.precio) * horasSeleccionadas.length}</>
+                )}
               </p>
 
               <div>
@@ -386,7 +422,11 @@ export default function Reservar() {
               disabled={enviando}
               className="w-full bg-indigo-600 text-white rounded-xl px-4 py-2.5 font-medium shadow-sm shadow-indigo-200 hover:bg-indigo-700 active:bg-indigo-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {enviando ? 'Confirmando...' : 'Confirmar turno'}
+              {enviando
+                ? 'Confirmando...'
+                : horasSeleccionadas.length > 1
+                  ? `Confirmar ${horasSeleccionadas.length} turnos`
+                  : 'Confirmar turno'}
             </button>
           </form>
         )}
